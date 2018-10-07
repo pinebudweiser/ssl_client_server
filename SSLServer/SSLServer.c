@@ -28,17 +28,17 @@ void main()
 	struct sockaddr_in tcp_server;
 	struct sockaddr_in client_request;
 	size_t client_len;
-	char    *str;
-	char     buf[4096];
-	int     err;
-	int     verify_client = ON; /* To verify a client certificate, set ON */
+	char* str;
+	char buf[4096];
+	int err;
+	int verify_client = ON; /* To verify a client certificate, set ON */
 
 	SSL_CTX* ctx;
 	SSL* ssl;
 	SSL_METHOD* meth;
 	X509* client_cert = NULL;
 
-	short int       s_port = 443;
+	short int s_port = 443;
 	/*----------------------------------------------------------------*/
 	/* Load encryption & hashing algorithms for the SSL program */
 	SSL_library_init();
@@ -183,21 +183,22 @@ void main()
 
 	/* Send data to the SSL client */
 	err = SSL_write(ssl, "HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\nHello",
-		strlen("HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\nHello")+1);
+		strlen("HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\nHello"));
 
 	/*--------------- SSL closure ---------------*/
 	/* Shutdown this side (server) of the connection. */
 
-	//err = SSL_shutdown(ssl);
+	
+	SSL_shutdown(ssl);
 
 
 	/* Terminate communication on a socket */
-	//err = close(client_descriptor);
-
+	
+	close(client_descriptor);
 
 	/* Free the SSL structure */
-	//SSL_free(ssl);
+	SSL_free(ssl);
 
 	/* Free the SSL_CTX structure */
-	//SSL_CTX_free(ctx);
+	SSL_CTX_free(ctx);
 }
